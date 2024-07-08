@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package dataTypespb;
+
+message Account {
+  enum State {
+    FINALIZED = 0;
+    PRECOMMIT = 1;
+    PREABORT = 2;
+    CONFLICT = 3;
+  }
+  uint64 nonce = 1;
+  State state = 2;
+}
+
+message Block {
+  uint64 id = 1;
+  uint64 epochId = 2;
+  Penny penny = 3;
+  Receipt receipt = 4;
+  repeated Log logs = 5;
+  bytes	balance = 6;
+  bytes hash = 7;
+  uint64 timeStamp = 8;
+}
+
+message Blocks {
+  repeated Block list = 1;
+}
+
+message BlockHeader {
+  uint64 id = 1;
+  uint64 epochId = 2;
+  bytes pennyHash = 3;
+  bytes receiptHash = 4;
+  repeated bytes logHashes = 5;
+  bytes	balance = 6;
+  bytes hash = 7;
+  uint64 timestamp = 8;
+}
+
+message Penny {
+  uint64 senderTransactionId = 1;
+  bytes amount = 3;
+  bytes sender = 4; // Address
+  bytes destination = 5; //Address
+  bytes data = 6;
+  uint64 timestamp = 7;
+  bytes originChain = 8;
+  bytes destinationChain = 9;
+}
+
+message PennyWithSenderHash {
+  dataTypespb.Penny penny = 1;
+  bytes senderBlockHash = 2;
+  uint64 senderEpochId = 3;
+}
+
+message Log {
+  bytes address = 1;
+  uint64 transactionId = 2;
+  uint32 index = 3;
+  repeated bytes topics = 4;
+  bytes data = 5;
+}
+
+message LogEntry {
+  repeated bytes topics = 1;
+  bytes data = 2;
+}
+
+message Logs {
+  repeated Log list = 1;
+}
+
+message Receipt {
+  bytes contractAddress = 1;
+  bool status = 2;
+  uint64 gasUsed = 3;
+  repeated Log logs = 4;
+}
+
+message Receipts {
+  repeated Receipt list = 1;
+}
+
+message ReceiptHeader {
+  bytes contractAddress = 1;
+  bool status = 2;
+  uint64 gasUsed = 3;
+  repeated bytes logHashes = 4;
+}
+
+message TransientNonce {
+  uint64 nonce = 1;
+}
